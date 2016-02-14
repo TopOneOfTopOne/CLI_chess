@@ -6,6 +6,7 @@ module Chess
   require_relative 'chess/pieces/pawn'
   require_relative 'chess/pieces/queen'
   require_relative 'chess/pieces/rook'
+  require_relative 'chess/pieces/knight'
   require_relative 'chess/board'
   require_relative 'chess/game'
 end

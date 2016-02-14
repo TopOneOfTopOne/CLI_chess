@@ -1,7 +1,7 @@
 module Chess
   class Game
 
-    def initalize
+    def initialize
       # in future implement a move log to enforce a 50 move rule
       # add deslection
       @turns = 0
