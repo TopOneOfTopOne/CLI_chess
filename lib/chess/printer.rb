@@ -16,7 +16,9 @@ module Chess
     block = "\u2593"
     puts <<-HERE
     #{block * 6}#{block * msg.length}#{block * 7}
+    #{block * 2}#{' '* (msg.length + 9)}#{block * 2}
     #{block * 2}     #{msg}    #{block * 2}
+    #{block * 2}#{' '* (msg.length + 9)}#{block * 2}
     #{block * 6}#{block * msg.length}#{block * 7}
     HERE
     end
@@ -24,7 +26,7 @@ module Chess
       puts "> #{msg}"
     end
     def self.welcome_msg
-
+      make_fancy('Chess by yours truly: noobling')
     end
 
     def self.piece_select(player)

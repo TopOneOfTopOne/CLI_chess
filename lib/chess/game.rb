@@ -3,19 +3,19 @@ module Chess
 
     def initialize
       # in future implement a move log to enforce a 50 move rule
-      # add deslection
+      # add deselection
       # add colorize gem
       @turns = 0
       @board = Board.new
       # upon creation of player user should be prompted for name of player, and that name will be used to identify the player
       @players = [Player.new(:white), Player.new(:black)] # only create two players since chess is two player game
-      Printer.print_msg({welcome_msg: nil})
+      Printer.welcome_msg
       run
     end
 
     def run
       loop do
-       player = player.each do |player|
+       player = @players.each do |player|
           @board.display
           if @board.check_mate?(player)
             break
