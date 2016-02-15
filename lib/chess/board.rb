@@ -51,25 +51,26 @@ module Chess
   #   end
   # end
     def display
-      puts "\n    x  0     1     2     3     4     5     6     7 "
+      puts "\n"
       puts " y  #{TABLE_LINES[:l_t_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_top_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_t_corner]}"
-      (0..7).each do |row|
+      7.downto(0).each do |row|
         print "    #{TABLE_LINES[:v_line]}"
-        (0..7).each do |col|
+        7.downto(0).each do |col|
           bold = ["\033[1m\e[3m", "\e[23m\033[0m"]
           piece = grid[col][row]
           piece.nil? ? print("    ") : print("  #{bold.first}#{piece.unicode}#{bold.last} ")
           print " #{TABLE_LINES[:v_line]}"
         end
         print "\n #{row}  #{TABLE_LINES[:v_line]}"
-        (0..7).each do |col|
+        7.downto(0).each do |col|
           piece = grid[col][row]
           piece.nil? ? print("    ") : print(" #{piece.code}")
           print " #{TABLE_LINES[:v_line]}"
         end
-        puts "\n    #{TABLE_LINES[:v_l_join]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:v_r_join]}" if !(row == 7)
+        puts "\n    #{TABLE_LINES[:v_l_join]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:v_r_join]}" if !(row == 0)
       end
       puts "\n    #{TABLE_LINES[:l_b_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_bot_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_b_corner]}"
+      puts "    x  0     1     2     3     4     5     6     7 "
     end
   end
 end
