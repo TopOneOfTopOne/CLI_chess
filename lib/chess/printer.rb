@@ -41,5 +41,8 @@ module Chess
       normal("Enter player name (#{color})")
     end
 
+    def self.game_end(msg)
+      make_fancy(msg)
+    end
   end
 end
