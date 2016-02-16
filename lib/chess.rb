@@ -13,7 +13,7 @@ module Chess
       "w_K" => "\u2654",
       "w_P" => "\u2659"
   }
-  
+
   TABLE_LINES = {
       v_l_join: "\u251c",
       mid_join: "\u253c",
@@ -27,6 +27,7 @@ module Chess
       v_line: "\u2502",
       h_line: "\u2500"
   }
+
   require_relative 'chess/user_interaction'
   require_relative 'chess/piece'
   require_relative 'chess/printer'
@@ -39,4 +40,5 @@ module Chess
   require_relative 'chess/player'
   require_relative 'chess/board'
   require_relative 'chess/game'
+
 end

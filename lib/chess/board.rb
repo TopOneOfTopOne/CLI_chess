@@ -53,11 +53,11 @@ module Chess
       puts "    x  0     1     2     3     4     5     6     7 "
     end
 
-    def check?(player)
+    def check?(color)
       #true when a possible_move of opponents piece includes the players king piece location
-      king_location = get_piece_location {|piece| piece.name == 'king0' && piece.color == player.color}
+      king_location = get_piece_location {|piece| piece.name == 'king0' && piece.color == color}
      # return true if iterate_grid {|piece, _| piece.color != player.color && piece.possible_moves.include?(king_location)}
-      return true if iterate_grid {|piece, _| player.color != piece.color && [[1,4],[3,2],[4,7]].include?(king_location)} # for testing
+      return true if iterate_grid {|piece, _| color != piece.color && [[1,4],[3,2],[4,7]].include?(king_location)} # for testing
       false
     end
 

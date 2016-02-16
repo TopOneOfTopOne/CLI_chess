@@ -17,7 +17,7 @@ describe Chess::Board do
   # end
 
   describe "#check?" do
-    subject {@board.check?(@player)}
+    subject {@board.check?(@player.color)}
     it {is_expected.to eq(true)}
   end
 end

@@ -18,7 +18,7 @@ module Chess
          @players.each do |player|
             @board.display
             break if game_ended
-            Printer.check(player) if @board.check?(player)
+            Printer.check(player) if @board.check?(player.color)
             Printer.print_msg({piece_select: player})
             # select_piece steps:
             # keep prompting user until valid input entered i.e. a2 (after n tries tell user how to seek help)
