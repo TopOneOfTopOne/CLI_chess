@@ -46,7 +46,7 @@ module Chess
     end
 
     # this method is not well written but has been done to save code lines
-    # should really return a boolean 
+    # should really return a boolean
     def game_ended
       player = calc_current_player
       if @board.check_mate?(player)

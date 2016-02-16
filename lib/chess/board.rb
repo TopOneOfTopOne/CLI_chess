@@ -1,5 +1,5 @@
 module Chess
-
+# x and y correspond to col and row
   class Board
     attr_accessor :grid
     def initialize
@@ -51,6 +51,30 @@ module Chess
       end
       puts "\n    #{TABLE_LINES[:l_b_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_bot_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_b_corner]}"
       puts "    x  0     1     2     3     4     5     6     7 "
+    end
+
+    def check?(player)
+      #true when a possible_move of opponents piece includes the players king piece location
+      king_location = get_piece_location {|piece| piece.name == 'king0' && piece.color == player.color}
+     # return true if iterate_grid {|piece, _| piece.color != player.color && piece.possible_moves.include?(king_location)}
+      return true if iterate_grid {|piece, _| player.color != piece.color && [[1,4],[3,2],[4,7]].include?(king_location)} # for testing
+      false
+    end
+
+    def get_piece_location
+      iterate_grid do |piece,loc|
+        next if piece.nil?
+        return loc if yield piece
+      end
+    end
+
+    def iterate_grid
+      @grid.each_with_index do |col_array, col_num|
+        col_array.each_with_index do |piece, row_num|
+          next if piece.nil? # might need to fix this later
+          yield piece,[col_num,row_num]
+          end
+        end
     end
   end
 end

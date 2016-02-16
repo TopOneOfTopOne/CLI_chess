@@ -1,3 +1,6 @@
 require_relative '../chess'
 
-Chess::Board.new().display
+board = Chess::Board.new
+player = Chess::Player.new(:black)
+# board.display
+p board.check?(player)
