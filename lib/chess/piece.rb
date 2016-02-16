@@ -9,7 +9,7 @@ module Chess
     end
 
     # really a helper method
-    def calc_possible_moves(board,valid_moves)
+    def current_valid_moves(board,valid_moves)
       location = board.get_piece_location {|piece| piece.name == @name && piece.color == @color}
       current_valid_moves = []
       # this aims to transpose each valid move according to current location to give a valid moves array for the given location
@@ -22,10 +22,18 @@ module Chess
         current_valid_moves << [new_x,new_y]
       end
       current_valid_moves
+    end
+
+    #linked with current valid moves method
+    def possible_moves(current_valid_moves)
       possible_moves = []
       current_valid_moves.each do |move|
-        if blocked?(move) || out_of_board?(move) || board.check?(@color)
-
+        if !blocked?(move) && !out_of_board?(move)
+          board.move_piece(location, move)
+          if !board.check?(@color)
+            possible_moves << move
+          end
+          board.undo_move(location, move)
         end
       end
     end
