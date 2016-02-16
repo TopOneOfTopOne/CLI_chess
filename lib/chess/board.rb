@@ -30,26 +30,6 @@ module Chess
       @grid[4][7] = King.new('king0', :black)
     end
 
-  #   def display
-  #     puts "\n"
-  #     puts "    #{TABLE_LINES[:l_t_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_top_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_t_corner]}"
-  #     (0..7).each do |row|
-  #       print "    #{TABLE_LINES[:v_line]}"
-  #
-  #       (0..7).each do |col|
-  #         piece = @grid[col][row]
-  #         piece.nil? ? print("    ") : print(" ""#{piece.unicode}"" ")
-  #         print " #{TABLE_LINES[:v_line]}"
-  #         print "\n #{row}  #{TABLE_LINES[:v_line]}"
-  #        (0..7).each do |col|
-  #          print " #{TABLE_LINES[:v_line]}"
-  #        end
-  #       end
-  #     end
-  #     puts "\n y  #{TABLE_LINES[:l_b_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_bot_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_b_corner]}"
-  #     puts puts "    x  0     1     2     3     4     5     6     7 "
-  #   end
-  # end
     def display
       puts "\n"
       puts " y  #{TABLE_LINES[:l_t_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_top_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_t_corner]}"
