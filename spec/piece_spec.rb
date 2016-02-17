@@ -48,11 +48,16 @@ describe Chess::Piece do
     end
   end
 
-  describe "line_moves" do
+  describe "#line_moves" do
     context "finding possible line moves for pawn" do
       subject {@pawn_w.line_moves(@board, 7)}
       it {is_expected.to eq([[1,2], [1,3], [1,4], [1,5], [1,6]])}
     end
+  end
+
+  describe '#get_piece_location' do
+    subject { @pawn_w.get_piece_location(@board) }
+    it { is_expected.to eq([1,1])}
   end
 end
 

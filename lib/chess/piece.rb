@@ -41,31 +41,47 @@ module Chess
     # end
 
     def get_piece_location(board)
-      board.get_piece_location {|piece| piece.name == @name && piece.color == @color}
+      board.iterate_grid {|piece, loc| return loc if (piece.name == @name && piece.color == @color)}
+    end
+
+    # to see if moving to the new location leave the king in check
+    def caused_check?(new_loc, board)
+      current_location = get_piece_location(board)
+      board.move_piece(current_location, new_loc)
+      if board.check?(@color)
+        board.undo_move # reverse the move
+        return true
+      end
+      board.undo_move # we have to reverse the move regardless
+      return false
     end
 
     # helps with finding possible moves up to l length
     def move_helper(board, l)
-      line_moves = []
+      moves = []
       (1..l).each do |spaces|
         new_loc = yield spaces
-        if (blocked?(new_loc, board) || out_of_board?(new_loc))
-          return line_moves
-        elsif kill?(new_loc, board)
-          line_moves << new_loc
-          return line_moves
+        return moves if (blocked?(new_loc, board) || out_of_board?(new_loc))
+        if caused_check?(new_loc, board)
+          puts 'caused check'
+          next
+        end
+        if kill?(new_loc, board)
+          puts 'killing'
+          moves << new_loc
+          return moves
         else
-          line_moves << new_loc
+          moves << new_loc
         end
       end
-      line_moves
+      moves
     end
 
     # finds all possible line moves
     # seems like bad design passing in board argument
     def line_moves(board, l)
       location = get_piece_location(board)
-      right_moves = move_helper(board, l) {|spaces| [location[0]+spaces, location[1]]}
+      right_moves = move_helper(board, l) {|spaces| [(location[0]+spaces), location[1]]}
       left_moves = move_helper(board, l) {|spaces| [location[0]-spaces, location[1]]}
       forward_moves = move_helper(board, l) {|spaces| [location[0], location[1]+spaces]}
       backward_moves = move_helper(board, l) {|spaces| [location[0], location[1]-spaces]}
@@ -75,10 +91,11 @@ module Chess
     # finds all possible diagonal moves
     def diagonal_moves(board, l)
       location = get_piece_location(board)
-      diagonal_moves1 = move_helper(board, l) {|spaces| [location[0]-spaces, location[1]+spaces]}
-      diagonal_moves2 = move_helper(board, l) {|spaces| [location[0]+spaces, location[1]+spaces]}
-      diagonal_moves3 = move_helper(board, l) {|spaces| [location[0]+spaces, location[1]-spaces]}
-      diagonal_moves4 = move_helper(board, l) {|spaces| [location[0]-spaces, location[1]-spaces]}
+
+      diagonal_moves1 = move_helper(board, l) {|spaces| [location[0]-spaces, (location[1]+spaces)]}
+      diagonal_moves2 = move_helper(board, l) {|spaces| [location[0]+spaces, (location[1]+spaces)]}
+      diagonal_moves3 = move_helper(board, l) {|spaces| [location[0]+spaces, (location[1]-spaces)]}
+      diagonal_moves4 = move_helper(board, l) {|spaces| [location[0]-spaces, (location[1]-spaces)]}
       diagonal_moves1 + diagonal_moves2 + diagonal_moves3 + diagonal_moves4
     end
 

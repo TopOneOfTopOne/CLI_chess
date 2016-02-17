@@ -1,7 +1,7 @@
 module Chess
 # x and y correspond to col and row
   class Board
-    attr_accessor :grid
+    attr_accessor :grid, :prev_piece_loc, :erased_piece_loc
     def initialize
       @grid = Array.new(8) {Array.new(8)}
       init_place_piece
@@ -55,19 +55,21 @@ module Chess
 
     def check?(color)
       #true when a possible_move of opponents piece includes the players king piece location
-      king_location = get_piece_location {|piece| piece.name == 'king0' && piece.color == color}
+      king_location = iterate_grid {|piece, loc| loc if (piece.name == 'king0' && piece.color == color)}
      # return true if iterate_grid {|piece, _| piece.color != player.color && piece.possible_moves.include?(king_location)}
-      return true if iterate_grid {|piece, _| color != piece.color && [[1,4],[3,2],[4,7]].include?(king_location)} # for testing
+     # return true if iterate_grid {|piece, _| color != piece.color && [[4,7]].include?(king_location)} # for testing
       false
     end
 
-    def get_piece_location
-      iterate_grid do |piece,loc|
-        next if piece.nil?
-        return loc if yield piece
-      end
-    end
 
+    # def get_piece_location
+    #   iterate_grid do |piece,loc|
+    #     next if piece.nil?
+    #     return loc if yield piece
+    #   end
+    # end
+
+    # yields piece and its location to use
     def iterate_grid
       @grid.each_with_index do |col_array, col_num|
         col_array.each_with_index do |piece, row_num|
@@ -75,6 +77,23 @@ module Chess
           yield piece,[col_num,row_num]
           end
         end
+    end
+
+    def move_piece(current_loc, new_loc)
+      iterate_grid do |piece, loc|
+        if loc == current_loc
+          @prev_piece_loc = [piece, loc]
+          @grid[loc[0]][loc[1]] = nil
+          # p new_loc
+          @erased_piece_loc = [ @grid[new_loc[0]][new_loc[1]], new_loc]
+          @grid[new_loc[0]][new_loc[1]] = piece
+        end
+      end
+    end
+
+    def undo_move
+      @grid[@prev_piece_loc[1][0]][@prev_piece_loc[1][1]] = @prev_piece_loc[0]
+      @grid[@erased_piece_loc[1][0]][@erased_piece_loc[1][1]] = @erased_piece_loc[0]
     end
   end
 end
