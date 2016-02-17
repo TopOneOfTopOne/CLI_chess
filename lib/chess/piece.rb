@@ -57,6 +57,8 @@ module Chess
     end
 
     # helps with finding possible moves up to l length
+    # passes validates move by checkif if blocked?, out_of_board?, caused_check?, kill?
+    # becareful when setting l = 1 returned array is: [[x,y]] so we cannot use (+) to add to an existing array instead (<<) needs to be used
     def move_helper(board, l)
       moves = []
       (1..l).each do |spaces|

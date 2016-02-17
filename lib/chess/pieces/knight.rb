@@ -9,9 +9,9 @@ module Chess
     def possible_moves(board)
       moves = []
       current_loc = get_piece_location(board)
-      p current_loc
       valid_moves.each do |move|
         move = move_helper(board, 1) { |_| [current_loc[0]+move[0], current_loc[1]+move[1]] }
+        p move
         next if move.empty?
         moves += move
       end
