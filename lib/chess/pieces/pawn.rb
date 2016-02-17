@@ -5,7 +5,7 @@ module Chess
     attr_accessor :valid_moves, :possible_moves
     def initialize(name, color)
       super
-      @valid_moves = color == :black ? [[0, 1], [0, 2], [1, 1], [-1, 1]] : [[0, -1], [0, -2], [-1, -1], [1, -1]]
+      @valid_moves = color == :black ? [[0, 1], [1, 1], [-1, 1]] : [[0, -1], [-1, -1], [1, -1]]
     end
 
     # def calc_possible_moves(board)
@@ -24,5 +24,38 @@ module Chess
     #   possible_moves = []
     #
     # end
+  end
+  
+  def possible_moves(board)
+    current_loc = get_piece_location(board)
+    moves = []
+    add_first_move_behaviour if first_move?(current_loc)
+    @valid_moves.each do |move|
+      move = [current_loc[0]+move[0], current_loc[1]+move[1]] # transposing pawn movement behaviour to current location
+      if moving_forward?(move, current_loc)
+        next if pawn_blocked?(move, board, current_loc)
+        moves += move
+      elsif killing?(move, board)
+        moves += move
+      end
+    end
+  end
+
+  def moving_forward?(new_loc, current_loc)
+    true if new_loc[0] == current_loc[0]
+    false
+  end
+  def first_move?(loc)
+    return true if (@color = :white && loc[1] == 1) || (@color = :black && loc[1] == 6)
+    false
+  end
+
+  def add_first_move_behaviour
+    @color == :white ? @valid_moves + [0,2] : @valid_moves + [0,-2]
+  end
+
+  def pawn_blocked?(new_loc, board, current_loc)
+    board.iterate_grid {|_, loc| return true if loc == new_loc && moving_forward?(new_loc,current_loc)}
+    false
   end
 end
