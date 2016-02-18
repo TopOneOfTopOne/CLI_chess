@@ -1,0 +1,11 @@
+> Not being consistent and going all over the place
+ > I did not follow the top down approach fully. I needed to refer back to the way I wrote the method and apply it exactly
+  >     def check?(color)
+          #true when a possible_move of opponents piece includes the players king piece location
+          king_location = @grid.iterate_grid {|piece, loc| loc if (piece.name == 'king0' && piece.color == color)}
+          return true if @grid.iterate_grid {|piece, _| piece.color != color && piece.possible_moves(@grid).include?(king_location)}
+          false
+        end
+  > #possible_moves should have been implemented as a method that takes no parameters but instead along the way I decided it was convenient to
+  > add an argument.
+  > This also highlights the importance of planning and how important the structure of the code is for further development

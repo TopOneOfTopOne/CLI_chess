@@ -11,5 +11,8 @@ describe Chess::Pawn do
     it 'returns correct possible moves' do
       expect( @pawn1.possible_moves(@board) ).to eq([[1,2],[1,3]])
     end
+    it 'is kill only mode' do
+      expect(@pawn1.possible_moves(@board,true)).to eq([])
+    end
   end
 end

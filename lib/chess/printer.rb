@@ -30,7 +30,7 @@ module Chess
     end
 
     def self.piece_select(player)
-
+      normal("Select a piece #{player.name}(#{color})")
     end
 
     def self.possible_move(possible_moves)

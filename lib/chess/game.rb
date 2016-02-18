@@ -18,8 +18,7 @@ module Chess
          @players.each do |player|
             @board.display
             break if game_ended
-            Printer.check(player) if @board.check?(player.color)
-            Printer.print_msg({piece_select: player})
+            Printer.check(player) if check?(player.color)
             # select_piece steps:
             # keep prompting user until valid input entered i.e. a2 (after n tries tell user how to seek help)
             ## keep prompting user until selected piece.possible_moves(@board).length > 0 (piece i.e. white_pawn1)
@@ -27,15 +26,15 @@ module Chess
             #### add current position to VALID_MOVES class variable to generate valid_current_moves array then check each element to see if it is a possible move to add it to the possible_moves array
             #### remember to return selected piece as first element in array
             ##### checks: square_empty? (only check for your pieces), not_in_check?, in_board?, no_piece_blocking? (no call when horse piece) *note pieces belong to the board not player
-            selected_piece,possible_moves = player.select_piece(@board)
-            Printer.print_msg({possible_move: possible_moves}) # print_msg is a hash to tailor the message for particular situation
+            selected_piece = player.select_piece(@board)
+            Printer.print_msg(selected_piece.possible_moves(@board)) # print_msg is a hash to tailor the message for particular situation
             # #move:
             ## goal to update board
             ### 2.prompt user until possible_moves array include user_input
             ### 3. board.move_piece(selected_piece, user_input)
             # In board.move_piece: board.remove_piece(selected_piece) board.place_piece(user_input)
             # In board.place_piece: if en_passant? exe_enpassant elif square_occupied? kill_piece elif castle? castle elif square_empty? normal_piece_place else raise "Fatal Error"  (user_input represents a location)
-            player.move(selected_piece, possible_moves, @board)
+            player.move(selected_piece, @board)
             moves += 1
          end
          if game_ended
@@ -65,6 +64,14 @@ module Chess
       @moves%2 != 0 ? @players[0] : @players[1]
     end
 
+    def check?(color)
+      #true when a possible_move of opponents piece includes the players king piece location
+      kill_only = true # only need locations where opponents pieces can attack
+      king = nil
+      @board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color)}
+      return true if @board.iterate_grid {|piece, _| piece.color != color && piece.possible_moves(@board,kill_only).include?(king)}
+      false
+    end
   end
 end
 

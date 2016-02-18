@@ -46,6 +46,9 @@ describe Chess::Piece do
       subject {@bishop_w.diagonal_moves(@board, 7)}
       it {is_expected.to eq([])}
     end
+    it 'is kill only with no possible kills' do
+      expect(@bishop_w.diagonal_moves(@board, 7, true)).to be_empty
+    end
   end
 
   describe "#line_moves" do

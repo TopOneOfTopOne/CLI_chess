@@ -1,6 +1,6 @@
 module Chess
   # I have intentionally made long variable names to make it easier to read
-  # not sure about including @board here
+  # not sure about including board here
   class Piece
     attr_accessor :name, :color, :unicode, :code
     def initialize(name, color)
@@ -10,36 +10,6 @@ module Chess
       @unicode = UNICODE_PIECES[@code]
     end
 
-    # really a helper method
-    # def current_valid_moves(board,valid_moves)
-    #   location = board.get_piece_location {|piece| piece.name == @name && piece.color == @color}
-    #   current_valid_moves = []
-    #   # this aims to transpose each valid move according to current location to give a valid moves array for the given location
-    #   # I have deliberately made a lot of pointless variables to show what is going on
-    #   valid_moves.each do |move|
-    #     x_spaces = move[0]
-    #     y_spaces = move[1]
-    #     new_x = location[0] + x_spaces
-    #     new_y = location[1] + y_spaces
-    #     current_valid_moves << [new_x,new_y]
-    #   end
-    #   current_valid_moves
-    # end
-    #
-    # #linked with current valid moves method
-    # def possible_moves(current_valid_moves)
-    #   possible_moves = []
-    #   current_valid_moves.each do |move|
-    #     if !blocked?(move) && !out_of_board?(move)
-    #       board.move_piece(location, move)
-    #       if !board.check?(@color)
-    #         possible_moves << move
-    #       end
-    #       board.undo_move(location, move)
-    #     end
-    #   end
-    # end
-
     def get_piece_location(board)
       board.iterate_grid {|piece, loc| return loc if (piece.name == @name && piece.color == @color)}
     end
@@ -47,8 +17,10 @@ module Chess
     # to see if moving to the new location leave the king in check
     def caused_check?(new_loc, board)
       current_location = get_piece_location(board)
+
       board.move_piece(current_location, new_loc)
-      if board.check?(@color)
+
+      if check?(board)
         board.undo_move # reverse the move
         return true
       end
@@ -56,23 +28,40 @@ module Chess
       return false
     end
 
+    def check?(board)
+      kill_only = true # only need locations where opponenant can kill
+      king = nil
+      board.iterate_grid {|piece, loc| king = loc if piece.name == 'king0' && piece.color == @color }
+      # return true if board.iterate_grid {|piece, _| piece.color != color && piece.possible_moves(board, kill_only).include?(king_location)}
+      board.iterate_grid do |piece, _|
+        # p "#{piece.possible_moves(board, kill_only)} #{piece.name}" if piece.color != @color
+      if piece.color != color && piece.possible_moves(board, kill_only).include?(king)
+
+        return true
+      end
+      end
+      false
+    end
+
+
     # helps with finding possible moves up to l length
     # passes validates move by checkif if blocked?, out_of_board?, caused_check?, kill?
     # becareful when setting l = 1 returned array is: [[x,y]] so we cannot use (+) to add to an existing array instead (<<) needs to be used
-    def move_helper(board, l)
+    def move_helper(board, l, kill_only = false)
       moves = []
       (1..l).each do |spaces|
         new_loc = yield spaces
         return moves if (blocked?(new_loc, board) || out_of_board?(new_loc))
-        if caused_check?(new_loc, board)
-          puts 'caused check'
+        # there is no need to evaluate caused check if we just look at possible locations to kill but don't intend to exercise kill option.
+        # This is useful for checking to see if player in check.
+        if !kill_only && caused_check?(new_loc, board)
           next
         end
         if kill?(new_loc, board)
-          puts 'killing'
           moves << new_loc
           return moves
-        else
+        end
+        if !kill_only
           moves << new_loc
         end
       end
@@ -81,23 +70,22 @@ module Chess
 
     # finds all possible line moves
     # seems like bad design passing in board argument
-    def line_moves(board, l)
+    def line_moves(board, l, kill_only = false)
       location = get_piece_location(board)
-      right_moves = move_helper(board, l) {|spaces| [(location[0]+spaces), location[1]]}
-      left_moves = move_helper(board, l) {|spaces| [location[0]-spaces, location[1]]}
-      forward_moves = move_helper(board, l) {|spaces| [location[0], location[1]+spaces]}
-      backward_moves = move_helper(board, l) {|spaces| [location[0], location[1]-spaces]}
+      right_moves = move_helper(board, l, kill_only) {|spaces| [(location[0]+spaces), location[1]]}
+      left_moves = move_helper(board, l, kill_only) {|spaces| [location[0]-spaces, location[1]]}
+      forward_moves = move_helper(board, l, kill_only) {|spaces| [location[0], location[1]+spaces]}
+      backward_moves = move_helper(board, l, kill_only) {|spaces| [location[0], location[1]-spaces]}
       right_moves + left_moves + forward_moves + backward_moves
     end
 
     # finds all possible diagonal moves
-    def diagonal_moves(board, l)
+    def diagonal_moves(board, l, kill_only = false)
       location = get_piece_location(board)
-
-      diagonal_moves1 = move_helper(board, l) {|spaces| [location[0]-spaces, (location[1]+spaces)]}
-      diagonal_moves2 = move_helper(board, l) {|spaces| [location[0]+spaces, (location[1]+spaces)]}
-      diagonal_moves3 = move_helper(board, l) {|spaces| [location[0]+spaces, (location[1]-spaces)]}
-      diagonal_moves4 = move_helper(board, l) {|spaces| [location[0]-spaces, (location[1]-spaces)]}
+      diagonal_moves1 = move_helper(board, l, kill_only) {|spaces| [location[0]-spaces, (location[1]+spaces)]}
+      diagonal_moves2 = move_helper(board, l, kill_only) {|spaces| [location[0]+spaces, (location[1]+spaces)]}
+      diagonal_moves3 = move_helper(board, l, kill_only) {|spaces| [location[0]+spaces, (location[1]-spaces)]}
+      diagonal_moves4 = move_helper(board, l, kill_only) {|spaces| [location[0]-spaces, (location[1]-spaces)]}
       diagonal_moves1 + diagonal_moves2 + diagonal_moves3 + diagonal_moves4
     end
 
@@ -117,7 +105,9 @@ module Chess
 
     def kill?(new_loc, board)
       board.iterate_grid do |piece, location|
-        return true if piece.color != @color && location == new_loc
+        if piece.color != @color && location == new_loc
+          return true
+        end
       end
       false
     end

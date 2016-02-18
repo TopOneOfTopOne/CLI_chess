@@ -1,6 +1,5 @@
 module Chess
-# x and y correspond to col and row
-  class Board
+  class Grid
     attr_accessor :grid, :prev_piece_loc, :erased_piece_loc
     def initialize
       @grid = Array.new(8) {Array.new(8)}
@@ -52,13 +51,6 @@ module Chess
       puts "\n    #{TABLE_LINES[:l_b_corner]}#{(TABLE_LINES[:h_line]*5 + TABLE_LINES[:mid_bot_join])*7}#{TABLE_LINES[:h_line]*5 + TABLE_LINES[:r_b_corner]}"
       puts "    x  0     1     2     3     4     5     6     7 "
     end
-
-    # def self.check?(color)
-    #   #true when a possible_move of opponents piece includes the players king piece location
-    #   king_location = iterate_grid {|piece, loc| loc if (piece.name == 'king0' && piece.color == color)}
-    #   return true if iterate_grid {|piece, _| piece.color != color && piece.possible_moves(@board).include?(king_location)}
-    #   false
-    # end
 
     # yields piece and its location to use
     def iterate_grid

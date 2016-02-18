@@ -11,5 +11,9 @@ describe Chess::Bishop do
       subject {@bishop.possible_moves(@board)}
       it {is_expected.to eq([])}
     end
+    it 'at 3,4 loc and kill only' do
+      @board.move_piece([5,0], [3,4])
+      expect(@bishop.possible_moves(@board,true)).to eq([[1, 6], [5, 6]])
+    end
   end
 end

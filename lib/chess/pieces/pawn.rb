@@ -1,17 +1,18 @@
 module Chess
   # pawn
   class Pawn < Piece
-    attr_accessor :valid_moves, :possible_moves
+    attr_accessor :valid_moves
     def initialize(name, color)
       super
       @valid_moves = color == :black ? [[0, -1], [-1, -1], [1, -1]] : [[0, 1], [1, 1], [-1, 1]]
     end
 
     # returns an array of possible moves for given pawn piece in give location
-    def possible_moves(board)
+    def possible_moves(board,kill_only=false)
       current_loc = get_piece_location(board)
       moves = []
       add_first_move_behaviour if first_move?(current_loc)
+      add_kill_only_behaviour if kill_only
       @valid_moves.each do |move|
         move = [current_loc[0]+move[0], current_loc[1]+move[1]] # transposing pawn movement behaviour to current location
         next if out_of_board?(move)
@@ -37,6 +38,9 @@ module Chess
       false
     end
 
+    def add_kill_only_behaviour
+      @valid_moves = color == :black ? [[-1, -1], [1, -1]] : [[1, 1], [-1, 1]]
+    end
     # adding the behaviour of pawns moving 2 spaces for first move
     def add_first_move_behaviour
       if @color == :white
