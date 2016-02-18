@@ -42,3 +42,4 @@ module Chess
   require_relative 'chess/game'
 
 end
+# Chess::Game.new.run

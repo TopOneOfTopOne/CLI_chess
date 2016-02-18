@@ -31,15 +31,10 @@ module Chess
     def check?(board)
       kill_only = true # only need locations where opponenant can kill
       king = nil
-      board.iterate_grid {|piece, loc| king = loc if piece.name == 'king0' && piece.color == @color }
-      # return true if board.iterate_grid {|piece, _| piece.color != color && piece.possible_moves(board, kill_only).include?(king_location)}
-      board.iterate_grid do |piece, _|
+      board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color) }
+      board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board, kill_only).include?(king))}
         # p "#{piece.possible_moves(board, kill_only)} #{piece.name}" if piece.color != @color
-      if piece.color != color && piece.possible_moves(board, kill_only).include?(king)
 
-        return true
-      end
-      end
       false
     end
 

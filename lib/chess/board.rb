@@ -75,8 +75,7 @@ module Chess
         if loc == current_loc
           @prev_piece_loc = [piece, loc]
           @grid[loc[0]][loc[1]] = nil
-          # p new_loc
-          @erased_piece_loc = [ @grid[new_loc[0]][new_loc[1]], new_loc]
+          @erased_piece_loc = [@grid[new_loc[0]][new_loc[1]], new_loc]
           @grid[new_loc[0]][new_loc[1]] = piece
         end
       end

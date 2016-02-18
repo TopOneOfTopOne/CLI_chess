@@ -1,7 +1,8 @@
 module Chess
   # pawn
+  # problem: calling possible_moves multiple times creates a larger valid moves list each time
   class Pawn < Piece
-    attr_accessor :valid_moves
+    attr_accessor :valid_moves,:temp_valid_moves
     def initialize(name, color)
       super
       @valid_moves = color == :black ? [[0, -1], [-1, -1], [1, -1]] : [[0, 1], [1, 1], [-1, 1]]
@@ -23,6 +24,8 @@ module Chess
           moves << move
         end
       end
+      # need to reset the valid moves each time otherwise #add_first_move_behaviour and #add_kill_only_behaviour keep adding onto the array
+      @valid_moves= color == :black ? [[0, -1], [-1, -1], [1, -1]] : [[0, 1], [1, 1], [-1, 1]]
       moves
     end
 
@@ -38,15 +41,16 @@ module Chess
       false
     end
 
+    # only want attacking moves no moving forward
     def add_kill_only_behaviour
-      @valid_moves = color == :black ? [[-1, -1], [1, -1]] : [[1, 1], [-1, 1]]
+      @valid_moves= color == :black ? [[-1, -1], [1, -1]] : [[1, 1], [-1, 1]]
     end
     # adding the behaviour of pawns moving 2 spaces for first move
     def add_first_move_behaviour
       if @color == :white
-        @valid_moves << [0,2]
+        @valid_moves<< [0,2]
       else
-        @valid_moves << [0,-2]
+        @valid_moves<< [0,-2]
       end
     end
 

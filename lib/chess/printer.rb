@@ -29,18 +29,21 @@ module Chess
       make_fancy('Chess by yours truly: noobling')
     end
 
-    def self.piece_select(player)
-      normal("Select a piece #{player.name}(#{color})")
+    def self.piece_select(name, color)
+      normal("Select a piece #{name}(#{color})")
     end
 
-    def self.possible_move(possible_moves)
-
+    def self.move_to(possible_moves)
+      normal("Possible moves: #{possible_moves}")
+      normal('Enter location to move to')
     end
 
     def self.get_name(color)
       normal("Enter player name (#{color})")
     end
-
+    def self.check(player)
+      make_fancy("You are in check #{player.name}(#{player.color})")
+    end
     def self.game_end(msg)
       make_fancy(msg)
     end

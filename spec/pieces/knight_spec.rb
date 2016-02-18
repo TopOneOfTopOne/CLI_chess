@@ -9,5 +9,6 @@ describe Chess::Knight do
   describe '#possible_moves' do
     subject { @knight1.possible_moves(@board) }
     it {is_expected.to eql([[7,2], [5,2]])}
+    it {is_expected.to eql([[7,2], [5,2]])}
   end
 end
