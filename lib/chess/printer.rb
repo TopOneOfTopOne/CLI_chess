@@ -29,8 +29,13 @@ module Chess
       make_fancy('Chess by yours truly: noobling')
     end
 
+
+    def self.help_reminder
+      normal("Type 'h' for help".colorize(:red))
+    end
+
     def self.piece_select(name, color)
-      normal("Select a piece #{name}(#{color})")
+      normal("Select a piece #{name}(#{color.to_s.colorize(color)})")
     end
 
     def self.move_to(possible_moves)
@@ -39,13 +44,14 @@ module Chess
     end
 
     def self.get_name(color)
-      normal("Enter player name (#{color})")
+      normal("Enter player name (#{color.to_s.colorize(color)})")
     end
     def self.check(player)
-      make_fancy("You are in check #{player.name}(#{player.color})")
+      make_fancy("You are in check #{player.name}(#{color.to_s.colorize(color)})")
     end
     def self.game_end(msg)
       make_fancy(msg)
     end
+
   end
 end

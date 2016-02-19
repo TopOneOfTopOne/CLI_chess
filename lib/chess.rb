@@ -27,7 +27,7 @@ module Chess
       v_line: "\u2502",
       h_line: "\u2500"
   }
-
+  require 'colorize'
   require_relative 'chess/user_interaction'
   require_relative 'chess/piece'
   require_relative 'chess/printer'

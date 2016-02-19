@@ -5,11 +5,13 @@ module Chess
       # in future implement a move log to enforce a 50 move rule
       # add deselection
       # add colorize gem
+      Printer.welcome_msg
+      Printer.help_reminder
       @moves = 0
       @board = Board.new
       # upon creation of player user should be prompted for name of player, and that name will be used to identify the player
       @players = [Player.new(:white), Player.new(:black)] # only create two players since chess is two player game
-      Printer.welcome_msg
+
       run
     end
 
