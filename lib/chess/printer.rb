@@ -47,7 +47,8 @@ module Chess
       normal("Enter player name (#{color.to_s.colorize(color)})")
     end
     def self.check(player)
-      make_fancy("You are in check #{player.name}(#{color.to_s.colorize(color)})")
+      color = Player.color.to_s
+      make_fancy("You are in check #{player.name}(#{color.colorize(color.to_sym)})")
     end
     def self.game_end(msg)
       make_fancy(msg)
