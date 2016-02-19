@@ -9,11 +9,6 @@ describe Chess::Board do
   #   expect(board.grid[5][5]).to be_nil
   # end
 
-  describe "#check?" do
-    subject {@board.check?(@player.color)}
-    it {is_expected.to eq(false)}
-  end
-
   describe "#move_piece" do
     board = Chess::Board.new
     board.move_piece([1,1],[3,4])
@@ -39,6 +34,10 @@ describe Chess::Board do
       subject { board.grid[3][4]}
       it { is_expected.to be_nil }
     end
+  end
+
+  describe '#display' do
+    @board.display
   end
 end
 
