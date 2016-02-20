@@ -1,6 +1,5 @@
 module Chess
-  # I have intentionally made long variable names to make it easier to read
-  # not sure about including board here
+  # handles the creation of possible moves for a general piece
   class Piece
     attr_accessor :name, :color, :unicode, :code
     def initialize(name, color)

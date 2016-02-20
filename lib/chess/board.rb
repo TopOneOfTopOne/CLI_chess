@@ -1,5 +1,7 @@
 module Chess
 # x and y correspond to col and row
+  # initialises pieces
+  # methods for manipulating and traversing grid
   class Board
     attr_accessor :grid, :prev_piece_loc, :erased_piece_loc
     def initialize
@@ -8,7 +10,6 @@ module Chess
     end
 
     def init_place_piece
-      # I am not too sure of how to use symbols correctly
       # knight intentionally spelt wrong for simplicity in piece methods
       (0..7).each {|pos| @grid[pos][1] = Pawn.new("pawn#{pos}", :white)}
       (0..7).each {|pos| @grid[pos][6] = Pawn.new("pawn#{pos}", :black)}
@@ -53,13 +54,6 @@ module Chess
       puts "    x  0     1     2     3     4     5     6     7 "
     end
 
-    # def self.check?(color)
-    #   #true when a possible_move of opponents piece includes the players king piece location
-    #   king_location = iterate_grid {|piece, loc| loc if (piece.name == 'king0' && piece.color == color)}
-    #   return true if iterate_grid {|piece, _| piece.color != color && piece.possible_moves(@board).include?(king_location)}
-    #   false
-    # end
-
     # yields piece and its location to use
     def iterate_grid
       @grid.each_with_index do |col_array, col_num|
@@ -77,8 +71,10 @@ module Chess
           @grid[loc[0]][loc[1]] = nil
           @erased_piece_loc = [@grid[new_loc[0]][new_loc[1]], new_loc]
           @grid[new_loc[0]][new_loc[1]] = piece
+          return
         end
       end
+      raise 'Fatal error'
     end
 
     def undo_move
