@@ -1,0 +1,9 @@
+script: rspec spec 
+language: ruby
+rvm:
+  - 1.9
+  - 2.0
+  - 2.1
+  - 2.2
+  - 2.3.0
+install: gem install colorize 

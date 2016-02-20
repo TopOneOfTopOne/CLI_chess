@@ -14,51 +14,43 @@ module Chess
       board.iterate_grid {|piece, loc| return loc if (piece.name == @name && piece.color == @color)}
     end
 
-    # to see if moving to the new location leave the king in check
+    # to see if moving to the new location leaves the king in check
     def caused_check?(new_loc, board)
       current_location = get_piece_location(board)
-
       board.move_piece(current_location, new_loc)
-
       if check?(board)
         board.undo_move # reverse the move
         return true
       end
       board.undo_move # we have to reverse the move regardless
-      return false
+      false
     end
 
     def check?(board)
-      kill_only = true # only need locations where opponenant can kill
+      kill_only = true # only need locations where opponent can kill
       king = nil
       board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color) }
       board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board, kill_only).include?(king))}
-        # p "#{piece.possible_moves(board, kill_only)} #{piece.name}" if piece.color != @color
-
       false
     end
 
 
     # helps with finding possible moves up to l length
-    # passes validates move by checkif if blocked?, out_of_board?, caused_check?, kill?
-    # becareful when setting l = 1 returned array is: [[x,y]] so we cannot use (+) to add to an existing array instead (<<) needs to be used
+    # passes validates move by checking if blocked?, out_of_board?, caused_check?, kill?
+    # be careful when setting l = 1 returned array is: [[x,y]] so we cannot use (+) to add to an existing array instead (<<) needs to be used
     def move_helper(board, l, kill_only = false)
       moves = []
       (1..l).each do |spaces|
-        new_loc = yield spaces
+        new_loc = yield spaces # spaces represents number of squares away from oirginal piece position
         return moves if (blocked?(new_loc, board) || out_of_board?(new_loc))
         # there is no need to evaluate caused check if we just look at possible locations to kill but don't intend to exercise kill option.
         # This is useful for checking to see if player in check.
-        if !kill_only && caused_check?(new_loc, board)
-          next
-        end
+        next if !kill_only && caused_check?(new_loc, board)
         if kill?(new_loc, board)
           moves << new_loc
           return moves
         end
-        if !kill_only
-          moves << new_loc
-        end
+        moves << new_loc  unless kill_only
       end
       moves
     end
@@ -92,19 +84,16 @@ module Chess
     end
 
     def out_of_board?(new_loc)
-      if (new_loc[0] > 7 || new_loc[0] < 0 || new_loc[1] >7 || new_loc[1] < 0)
-        return true
-      end
+      return true unless new_loc[0].between?(0,7) && new_loc[1].between?(0,7)
       false
     end
 
     def kill?(new_loc, board)
       board.iterate_grid do |piece, location|
-        if piece.color != @color && location == new_loc
-          return true
-        end
+       return true if piece.color != @color && location == new_loc
       end
       false
     end
+
   end
 end
