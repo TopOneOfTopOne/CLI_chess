@@ -1,17 +1,6 @@
 module Chess
   #helps with print messages to output
   module Printer
-    # def self.print_msg(hash)
-    #   case hash.keys[0]
-    #   when :welcome_msg then welcome_msg
-    #   when :piece_select then piece_select(hash.values[0])
-    #   when :possible_move then possible_move(hash.values[0])
-    #   when :get_name then get_name(hash.values[0])
-    #   else
-    #     raise 'Fatal Error'
-    #   end
-    # end
-
     def self.make_fancy(msg)
     block = "\u2593"
     puts <<-HERE
@@ -26,6 +15,9 @@ module Chess
       puts "> #{msg}"
     end
     def self.welcome_msg
+      puts "Suggested terminal preferences;
+  Background: white
+  Area: 95x35\n".colorize(:blue)
       make_fancy('Chess by yours truly: noobling')
     end
 

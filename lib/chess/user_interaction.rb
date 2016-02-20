@@ -7,26 +7,28 @@ module Chess
       return name
     end
 
+    # gets user input
+    # keeps prompting user until they enter a valid location
     def self.get_piece_loc(board, color)
       loop do
         user_loc = gets.chomp
-        if correct_loc_format(user_loc) # if the piece is correct format than an array is returned otherwise nil is returned
-          user_loc = correct_loc_format(user_loc)
-        else
-          next # otherwise we need to get userinput again
-        end
-        next if !valid_piece_selection?(board,color,user_loc)
-        return user_loc
+        next unless correct_loc_format(user_loc) # if the piece is correct format than an array is returned otherwise nil is returned
+        loc = parse(user_loc)
+        next unless valid_piece_selection?(board,color,loc)
+        return loc
       end
     end
 
-    def self.valid_piece_selection?(board,color,user_loc)
-      if board.grid[user_loc[0]][user_loc[1]].nil?
+    # takes in a 2 number array
+    # checks to see if chosen piece has possible moves
+    # and checks if its player's piece and not opponents
+    def self.valid_piece_selection?(board,color,loc)
+      if board.grid[loc[0]][loc[1]].nil?
         puts '> Cannot select empty square..'
         return false
       end
-      board.iterate_grid do |piece,loc|
-        if loc == user_loc
+      board.iterate_grid do |piece,loc1|
+        if loc1 == loc
           if piece.color != color
             puts '> Not your piece..'
             return false
@@ -41,39 +43,34 @@ module Chess
       raise 'Fatal error'
     end
 
+    # checks the array consists of only 2 numbers
+    # in the range of 0-7
     def self.correct_loc_format(loc)
-      sanitised_loc = parse(loc)
-      return nil if sanitised_loc.nil? # don't need to evaluate further since it is already an invalid value
-      if sanitised_loc.length != 2
-        puts "> You didn't enter 2 numbers.."
-        return nil
-      end
-      if sanitised_loc[0] < 0 || sanitised_loc[0] > 7 || sanitised_loc[1] < 0 || sanitised_loc[1] > 7
-        puts '> Numbers should be in the range of 0-7..'
-        return nil
-      end
-      return sanitised_loc
+      loc = parse(loc)
+      return nil if loc.nil? # don't need to evaluate further since it is already an invalid value
+      return puts "> You didn't enter 2 numbers.." if loc.length != 2
+      return puts '> Numbers should be in the range of 0-7..' unless (loc[0].between?(0,7) && loc[1].between?(0,7))
+      loc
     end
 
+    # parses the raw user input that is a string
+    # into an array of numbers that can be used to find a piece on grid
     def self.parse(loc)
       begin
-        sanitised_loc = []
         loc.gsub!(/[^0-9A-Za-z]/, '') # removing special characters
-        string_array_loc = loc.split('')
-        string_array_loc.each {|elem| sanitised_loc << Integer(elem) }
-        return sanitised_loc
+        loc.split('').map {|elem| Integer(elem) }
       rescue ArgumentError
         puts '> You did not enter a number..'
-        return nil
       end
     end
 
+    # keeps prompting user until they enter a location in their possible moves array
     def self.get_move_to_loc(possible_moves)
       loop do
         user_loc = gets.chomp
-        next if !correct_loc_format(user_loc)
+        next unless correct_loc_format(user_loc) # ask user again if not correct input
         return parse(user_loc) if possible_moves.include? parse(user_loc)
-        puts "> Not a possible move.."
+        puts '> Not a possible move..'
       end
     end
   end
