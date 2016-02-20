@@ -18,7 +18,7 @@ module Chess
         move = [current_loc[0]+move[0], current_loc[1]+move[1]] # transposing pawn movement behaviour to current location
         next if out_of_board?(move)
         if moving_forward?(move, current_loc)
-          next if pawn_blocked?(move, board, current_loc)
+          next if pawn_blocked?(move, board)
           moves << move
         elsif kill?(move, board)
           moves << move
@@ -29,13 +29,13 @@ module Chess
       moves
     end
 
-    #Moving foward when x coordinate doesn't change
+    # We know pawn is moving forward when x coordinate doesn't change
     def moving_forward?(new_loc, current_loc)
       return true if new_loc[0] == current_loc[0]
       false
     end
 
-    #know it is pawn first move when their y coordinate is 6 for black or 1 for white since pawns only move forward
+    # know it is pawn first move when their y coordinate is 6 for black or 1 for white since pawns only move forward
     def first_move?(loc)
       return true if (@color == :white && loc[1] == 1) || (@color == :black && loc[1] == 6)
       false
@@ -47,16 +47,12 @@ module Chess
     end
     # adding the behaviour of pawns moving 2 spaces for first move
     def add_first_move_behaviour
-      if @color == :white
-        @valid_moves<< [0,2]
-      else
-        @valid_moves<< [0,-2]
-      end
+      @color == :white ? @valid_moves << [0,2] : @valid_moves << [0,-2]
     end
 
     # pawns are special because blocked by both colors
     # therefore we need to create a new blocked? method specific to Pawn class
-    def pawn_blocked?(new_loc, board, current_loc)
+    def pawn_blocked?(new_loc, board)
       board.iterate_grid {|_, loc| return true if loc == new_loc}
       false
     end

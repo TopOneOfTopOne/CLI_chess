@@ -15,10 +15,8 @@ module Chess
 
     def move_piece(board)
       selected_piece,piece_loc = select_piece(board)
-      # p selected_piece.possible_moves(board)
       possible_moves = selected_piece.possible_moves(board)
       Printer.move_to(possible_moves)
-      # board.colorize_possible_moves(possible_moves)
       move_to_loc = UI.get_move_to_loc(possible_moves)
       board.move_piece(piece_loc,move_to_loc)
     end
