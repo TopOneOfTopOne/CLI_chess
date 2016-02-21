@@ -17,7 +17,7 @@ module Chess
     def caused_check?(new_loc, board)
       current_location = get_piece_location(board)
       board.move_piece(current_location, new_loc)
-      if check?(board)
+      if Scenario.check?(color,board)
         board.undo_move # reverse the move
         return true
       end
@@ -25,13 +25,13 @@ module Chess
       false
     end
 
-    def check?(board)
-      kill_only = true # only need locations where opponent can kill
-      king = nil
-      board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color) }
-      board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board, kill_only).include?(king))}
-      false
-    end
+    # def check?(board)
+    #   kill_only = true # only need locations where opponent can kill
+    #   king = nil
+    #   board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color) }
+    #   board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board, kill_only).include?(king))}
+    #   false
+    # end
 
 
     # helps with finding possible moves up to l length

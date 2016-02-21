@@ -19,7 +19,7 @@ module Chess
            system('clear')
            @board.display
            # break if game_ended
-           Printer.check(player) if check?(player.color)
+           Printer.check(player) if Scenario.check?(player.color,@board)
            player.move_piece(@board)
            @moves += 1
          end
@@ -50,14 +50,14 @@ module Chess
     #   @moves%2 != 0 ? @players[0] : @players[1]
     # end
 
-    def check?(color)
-      #true when a possible_move of opponents piece includes the players king piece location
-      kill_only = true # only need locations where opponents pieces can attack
-      king = nil
-      @board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == color)}
-      @board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(@board,kill_only).include?(king))}
-      false
-    end
+    # def check?(color)
+    #   #true when a possible_move of opponents piece includes the players king piece location
+    #   kill_only = true # only need locations where opponents pieces can attack
+    #   king = nil
+    #   @board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == color)}
+    #   @board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(@board,kill_only).include?(king))}
+    #   false
+    # end
   end
 end
 
