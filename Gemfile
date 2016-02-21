@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'colorize'
-gem 'rspec', :require => 'spec'
+group :development, :test do
+  gem 'rspec'
+end
