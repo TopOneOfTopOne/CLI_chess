@@ -6,4 +6,5 @@ rvm:
   - 2.1
   - 2.2
   - 2.3.0
-install: gem install colorize, rpsec
+install: gem install colorize
+install: gem install rpsec
