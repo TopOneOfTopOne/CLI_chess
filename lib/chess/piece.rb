@@ -8,14 +8,10 @@ module Chess
       @code = "#{color.to_s[0]}_#{name[0].upcase}"
       @unicode = UNICODE_PIECES[@code]
     end
-
-    def get_piece_location(board)
-      board.iterate_grid {|piece, loc| return loc if (piece.name == @name && piece.color == @color)}
-    end
-
+    
     # to see if moving to the new location leaves the king in check
     def caused_check?(new_loc, board)
-      current_location = get_piece_location(board)
+      current_location = board.get_piece_loc(@color,@name)
       board.move_piece(current_location, new_loc)
       if Scenario.check?(color,board)
         board.undo_move # reverse the move
@@ -57,7 +53,7 @@ module Chess
     # finds all possible line moves
     # seems like bad design passing in board argument
     def line_moves(board, l, kill_only = false)
-      location = get_piece_location(board)
+      location = board.get_piece_loc(color,name)
       right_moves = move_helper(board, l, kill_only) {|spaces| [(location[0]+spaces), location[1]]}
       left_moves = move_helper(board, l, kill_only) {|spaces| [location[0]-spaces, location[1]]}
       forward_moves = move_helper(board, l, kill_only) {|spaces| [location[0], location[1]+spaces]}
@@ -67,7 +63,7 @@ module Chess
 
     # finds all possible diagonal moves
     def diagonal_moves(board, l, kill_only = false)
-      location = get_piece_location(board)
+      location = board.get_piece_loc(color,name)
       diagonal_moves1 = move_helper(board, l, kill_only) {|spaces| [location[0]-spaces, (location[1]+spaces)]}
       diagonal_moves2 = move_helper(board, l, kill_only) {|spaces| [location[0]+spaces, (location[1]+spaces)]}
       diagonal_moves3 = move_helper(board, l, kill_only) {|spaces| [location[0]+spaces, (location[1]-spaces)]}

@@ -64,6 +64,14 @@ module Chess
       end
     end
 
+    def get_piece(loc)
+      iterate_grid {|piece,loc1| return piece if loc1 == loc}
+    end
+
+    def get_piece_loc(color,name)
+      iterate_grid {|piece,loc| return loc if piece.color == color && piece.name == name}
+    end
+
     def move_piece(current_loc, new_loc)
       iterate_grid do |piece, loc|
         if loc == current_loc

@@ -8,5 +8,12 @@ module Chess
       board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board,kill_only).include?(king))}
       false
     end
+
+    def self.en_passant?(color,board)
+      board.iterate_grid do |piece,loc|
+        if loc == 1
+        end
+      end
+    end
   end
 end

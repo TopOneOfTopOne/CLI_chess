@@ -10,7 +10,7 @@ module Chess
     def select_piece(board)
       Printer.piece_select(@name,@color)
       piece_loc = UI.get_piece_loc(board, @color)
-      board.iterate_grid {|piece, loc| return [piece,piece_loc] if piece_loc == loc}
+      [board.get_piece(piece_loc),piece_loc]
     end
 
     def move_piece(board)

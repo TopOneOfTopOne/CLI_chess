@@ -61,6 +61,13 @@
         12,
         null,
         null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        null,
+        null,
         null
       ],
       "/Users/CEO/Desktop/chess_mine/lib/chess/user_interaction.rb": [
@@ -155,7 +162,7 @@
         null,
         null,
         1,
-        5209,
+        2485,
         null,
         null,
         null,
@@ -526,6 +533,14 @@
         null,
         null,
         1,
+        0,
+        null,
+        null,
+        1,
+        2724,
+        null,
+        null,
+        1,
         22,
         437,
         22,
@@ -890,6 +905,6 @@
         null
       ]
     },
-    "timestamp": 1456053911
+    "timestamp": 1456155043
   }
 }
