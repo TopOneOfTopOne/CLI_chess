@@ -11,12 +11,20 @@ module Chess
 
     def self.en_passant?(color,board)
       board.iterate_grid do |piece,_|
-       return true if piece.color == color && piece.name.include?('pawn')
+       return piece if piece.color == color && piece.name.include?('pawn')
       end
     end
 
-    def self.en_passant(color,board)
+    def self.en_passant(piece,board)
+      piece_loc = board.get_piece_loc(piece)
+      evolve_to_piece = 'queen' # set for now to test
 
+
+    end
+
+    def self.count_piece(piece,board)
+      count = 0
+      board.iterate_grid {|p,_| count += 1 if (p.name.include?(piece.name[0..-2]))}
     end
   end
 end
