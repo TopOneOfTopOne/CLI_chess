@@ -84,12 +84,6 @@ describe Chess::Piece do
       expect(@bishop_w.line_moves(@board,7)).to be_empty
     end
   end
-
-  describe '#get_piece_location' do
-    it 'gives correct location' do
-      expect(@pawn_w.get_piece_location(@board)).to eq([1,1])
-    end
-  end
 end
 
 

@@ -10,7 +10,7 @@ module Chess
 
     # returns an array of possible moves for given pawn piece in give location
     def possible_moves(board,kill_only=false)
-      current_loc = get_piece_location(board)
+      current_loc = board.get_piece_loc(color,name)
       moves = []
       add_first_move_behaviour if first_move?(current_loc)
       add_kill_only_behaviour if kill_only

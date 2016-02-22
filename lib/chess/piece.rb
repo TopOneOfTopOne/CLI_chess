@@ -8,7 +8,7 @@ module Chess
       @code = "#{color.to_s[0]}_#{name[0].upcase}"
       @unicode = UNICODE_PIECES[@code]
     end
-    
+
     # to see if moving to the new location leaves the king in check
     def caused_check?(new_loc, board)
       current_location = board.get_piece_loc(@color,@name)

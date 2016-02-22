@@ -10,10 +10,13 @@ module Chess
     end
 
     def self.en_passant?(color,board)
-      board.iterate_grid do |piece,loc|
-        if loc == 1
-        end
+      board.iterate_grid do |piece,_|
+       return true if piece.color == color && piece.name.include?('pawn')
       end
+    end
+
+    def self.en_passant(color,board)
+
     end
   end
 end
