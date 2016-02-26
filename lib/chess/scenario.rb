@@ -1,4 +1,5 @@
 module Chess
+  # special scenarios in chess
   module Scenario
     def self.check?(color,board)
       #true when a possible_move of opponents piece includes the players king piece location
@@ -25,7 +26,21 @@ module Chess
       piece_loc = board.get_piece_loc(piece.color,piece.name)
       queen_num = board.count_piece(piece)  - 1
       board.grid[piece_loc[0]][piece_loc[1]] = Queen.new("queen#{queen_num}", player.color)
+    end
 
+    def self.checkmate?(color, board)
+      return false unless check?(color,board)
+      board.iterate_grid do |piece, _|
+        return false if piece.color == color && piece.possible_moves(board).any?
+      end
+      true
+    end
+
+    def self.stalemate?(board)
+      board.iterate_grid do |piece, loc|
+        return false if piece.possible_moves(board).any?
+      end
+      true
     end
   end
 end

@@ -10,6 +10,7 @@ module Chess
     end
 
     # to see if moving to the new location leaves the king in check
+    # reason why cannot call caused_check when in kill only mode is caused_check uses kill_only
     def caused_check?(new_loc, board)
       current_location = board.get_piece_loc(@color,@name)
       board.move_piece(current_location, new_loc)
@@ -21,22 +22,13 @@ module Chess
       false
     end
 
-    # def check?(board)
-    #   kill_only = true # only need locations where opponent can kill
-    #   king = nil
-    #   board.iterate_grid {|piece, loc| king = loc if (piece.name == 'king0' && piece.color == @color) }
-    #   board.iterate_grid {|piece, _| return true if (piece.color != color && piece.possible_moves(board, kill_only).include?(king))}
-    #   false
-    # end
-
-
     # helps with finding possible moves up to l length
-    # passes validates move by checking if blocked?, out_of_board?, caused_check?, kill?
+    # move is checked with the following methods blocked?, out_of_board?, caused_check?, kill?
     # be careful when setting l = 1 returned array is: [[x,y]] so we cannot use (+) to add to an existing array instead (<<) needs to be used
     def move_helper(board, l, kill_only = false)
       moves = []
       (1..l).each do |spaces|
-        new_loc = yield spaces # spaces represents number of squares away from oirginal piece position
+        new_loc = yield spaces # spaces represents number of squares away from original piece position
         return moves if (blocked?(new_loc, board) || out_of_board?(new_loc))
         # there is no need to evaluate caused check if we just look at possible locations to kill but don't intend to exercise kill option.
         # This is useful for checking to see if player in check.
@@ -83,6 +75,7 @@ module Chess
       false
     end
 
+    # Is there a piece to kill at now location
     def kill?(new_loc, board)
       board.iterate_grid do |piece, location|
        return true if piece.color != @color && location == new_loc

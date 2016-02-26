@@ -1,6 +1,8 @@
 module Chess
-  # pawn
-  # problem: calling possible_moves multiple times creates a larger valid moves list each time
+  # pawn is different to other pieces because:
+   # can move an extra space if it is at its starting square
+   # can only attack diagonally
+   # gets blocked by both color pieces
   class Pawn < Piece
     attr_accessor :valid_moves,:temp_valid_moves
     def initialize(name, color)
@@ -17,6 +19,7 @@ module Chess
       @valid_moves.each do |move|
         move = [current_loc[0]+move[0], current_loc[1]+move[1]] # transposing pawn movement behaviour to current location
         next if out_of_board?(move)
+        next if !kill_only && caused_check?(move, board)
         if moving_forward?(move, current_loc)
           next if pawn_blocked?(move, board)
           moves << move

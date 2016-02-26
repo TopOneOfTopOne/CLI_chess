@@ -73,14 +73,5 @@ module Chess
         puts '> Not a possible move..'
       end
     end
-
-    def self.enpassant(player,board)
-      valid_pieces_to_promote = ['queen','rook']
-      puts '> What piece would you like to promote to?'
-      loop do
-        piece_name = gets.chomp
-        next unless []
-      end
-    end
   end
 end

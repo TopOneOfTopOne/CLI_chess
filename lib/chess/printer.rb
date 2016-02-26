@@ -1,5 +1,5 @@
 module Chess
-  #helps with print messages to output
+  # helps with printing messages to output
   module Printer
     def self.make_fancy(msg)
     block = "\u2593"
@@ -39,8 +39,7 @@ module Chess
       normal("Enter player name (#{color.to_s.colorize(color)})")
     end
     def self.check(player)
-      color = Player.color.to_s
-      make_fancy("You are in check #{player.name}(#{color.colorize(color.to_sym)})")
+      make_fancy("You are in check #{player.name}")
     end
     def self.game_end(msg)
       make_fancy(msg)

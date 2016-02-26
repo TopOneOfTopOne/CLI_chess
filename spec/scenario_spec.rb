@@ -32,4 +32,10 @@ describe Chess::Scenario do
       expect(@board.grid[2][7]).to be_an_instance_of(Chess::Queen)
     end
   end
+
+  context '#checkmate?' do
+    it 'is not in checkmate' do
+      expect(Chess::Scenario.checkmate?(:white, @board)).to be_falsey
+    end
+  end
 end
