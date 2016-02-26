@@ -13,7 +13,7 @@ module Chess
       loop do
         user_loc = gets.chomp
         next unless correct_loc_format(user_loc) # if the piece is correct format than an array is returned otherwise nil is returned
-        loc = parse(user_loc)
+        loc = parse_piece(user_loc)
         next unless valid_piece_selection?(board,color,loc)
         return loc
       end
@@ -46,16 +46,16 @@ module Chess
     # checks the array consists of only 2 numbers
     # in the range of 0-7
     def self.correct_loc_format(loc)
-      loc = parse(loc)
+      loc = parse_piece(loc)
       return nil if loc.nil? # don't need to evaluate further since it is already an invalid value
       return puts "> You didn't enter 2 numbers.." if loc.length != 2
       return puts '> Numbers should be in the range of 0-7..' unless (loc[0].between?(0,7) && loc[1].between?(0,7))
       loc
     end
 
-    # parses the raw user input that is a string
+    # parse_pieces the raw user input that is a string
     # into an array of numbers that can be used to find a piece on grid
-    def self.parse(loc)
+    def self.parse_piece(loc)
       begin
         loc.gsub!(/[^0-9A-Za-z]/, '') # removing special characters
         loc.split('').map {|elem| Integer(elem) }
@@ -69,8 +69,17 @@ module Chess
       loop do
         user_loc = gets.chomp
         next unless correct_loc_format(user_loc) # ask user again if not correct input
-        return parse(user_loc) if possible_moves.include? parse(user_loc)
+        return parse_piece(user_loc) if possible_moves.include? parse_piece(user_loc)
         puts '> Not a possible move..'
+      end
+    end
+
+    def self.enpassant(player,board)
+      valid_pieces_to_promote = ['queen','rook']
+      puts '> What piece would you like to promote to?'
+      loop do
+        piece_name = gets.chomp
+        next unless []
       end
     end
   end

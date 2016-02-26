@@ -19,7 +19,7 @@ module Chess
            system('clear')
            @board.display
            # break if game_ended
-           Printer.check(player) if Scenario.check?(player.color,@board)
+           check_scenarios(player)
            player.move_piece(@board)
            @moves += 1
          end
@@ -28,6 +28,11 @@ module Chess
          #   break
          # end
       end
+    end
+
+    def check_scenarios(player)
+      Printer.check(player) if Scenario.check?(player.color,@board)
+      Scenario.promote_pawn(player,@board) if Scenario.promote_pawn?(player.color,@board)
     end
 
     # this method is not well written but has been done to save code lines

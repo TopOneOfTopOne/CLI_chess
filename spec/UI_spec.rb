@@ -4,13 +4,13 @@ describe Chess::UI do
   let(:board) {Chess::Board.new}
   describe '#parse' do
     it 'returns array of numbers given numbers' do
-     expect(Chess::UI.parse('21')).to eq([2,1])
+     expect(Chess::UI.parse_piece('21')).to eq([2,1])
      end
     it 'is not a problem adding special characters' do
-      expect(Chess::UI.parse('1,2.!')).to eq([1,2])
+      expect(Chess::UI.parse_piece('1,2.!')).to eq([1,2])
     end
     it 'returns nil from strings' do
-      expect(Chess::UI.parse('abc')).to be_nil
+      expect(Chess::UI.parse_piece('abc')).to be_nil
     end
 
   end

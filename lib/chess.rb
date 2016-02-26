@@ -29,7 +29,8 @@ module Chess
   }
   require 'colorize'
   require_relative 'chess/scenario'
-  require_relative 'chess/user_interaction'
+  require_relative 'Chess/UI_helper'
+  require_relative 'chess/UI'
   require_relative 'chess/piece'
   require_relative 'chess/printer'
   require_relative 'chess/pieces/bishop'

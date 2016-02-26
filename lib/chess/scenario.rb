@@ -9,22 +9,23 @@ module Chess
       false
     end
 
-    def self.en_passant?(color,board)
-      board.iterate_grid do |piece,_|
-       return piece if piece.color == color && piece.name.include?('pawn')
+    def self.promote_pawn?(color,board)
+      board.iterate_grid do |piece, loc|
+       if piece.color == color && piece.name.include?('pawn')
+         if loc[1] == 7 || loc[1] == 0
+           return piece
+         end
+       end
       end
+      nil
     end
 
-    def self.en_passant(piece,board)
-      piece_loc = board.get_piece_loc(piece)
-      evolve_to_piece = 'queen' # set for now to test
+    def self.promote_pawn(player,board)
+      piece = promote_pawn?(player.color,board)
+      piece_loc = board.get_piece_loc(piece.color,piece.name)
+      queen_num = board.count_piece(piece)  - 1
+      board.grid[piece_loc[0]][piece_loc[1]] = Queen.new("queen#{queen_num}", player.color)
 
-
-    end
-
-    def self.count_piece(piece,board)
-      count = 0
-      board.iterate_grid {|p,_| count += 1 if (p.name.include?(piece.name[0..-2]))}
     end
   end
 end

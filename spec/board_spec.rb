@@ -3,6 +3,7 @@ describe Chess::Board do
     before :each do
       @board = Chess::Board.new
       @player = instance_double('Chess::Player', :name, :color => :black)
+      @piece = instance_double('Piece', name: 'pawn1', :color => :white)
     end
 
   describe "#move_piece" do
@@ -36,6 +37,12 @@ describe Chess::Board do
 
   describe '#display' do
     @board.display
+  end
+
+  context '#count_piece' do
+    it 'should return 8' do
+      expect(@board.count_piece(@piece)).to eq(8)
+    end
   end
 end
 

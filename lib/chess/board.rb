@@ -72,6 +72,12 @@ module Chess
       iterate_grid {|piece,loc| return loc if piece.color == color && piece.name == name}
     end
 
+    def count_piece(piece)
+      count = 0
+      iterate_grid {|p,_| count += 1 if (p.color == piece.color && p.name.include?(piece.name[0..-2]))}
+      count
+    end
+
     def move_piece(current_loc, new_loc)
       iterate_grid do |piece, loc|
         if loc == current_loc
