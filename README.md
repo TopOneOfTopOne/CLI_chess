@@ -1,3 +1,7 @@
+![img not working please report this to me](https://travis-ci.org/TopOneOfTopOne/CLI_chess.svg?branch=master)
+[![Code Climate](https://codeclimate.com/github/TopOneOfTopOne/CLI_chess/badges/gpa.svg)](https://codeclimate.com/github/TopOneOfTopOne/CLI_chess)
+[![Coverage Status](https://coveralls.io/repos/github/TopOneOfTopOne/CLI_chess/badge.svg?branch=master)](https://coveralls.io/github/TopOneOfTopOne/CLI_chess?branch=master)
+
 # CLI_chess
 Play chess in the CLI. Move by typing shit
 
